@@ -1,6 +1,11 @@
 import Head from "next/head";
+import Link from "next/link";
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 
 export default function Home() {
+  const supabaseClient = useSupabaseClient();
+  const user = useUser();
+
   return (
     <>
       <Head>
@@ -11,6 +16,19 @@ export default function Home() {
       </Head>
       <main>
         <h1 className="text-3xl font-bold underline">Hello world!</h1>
+        {user ? (
+          <>
+            <button className="btn btn-primary" onClick={() => supabaseClient.auth.signOut()}>
+              Sign out
+            </button>
+            <p>user:</p>
+            <pre>{JSON.stringify(user, null, 2)}</pre>
+          </>
+        ) : (
+          <Link href="/login" className="btn btn-primary">
+            Sign in
+          </Link>
+        )}
       </main>
     </>
   );
