@@ -45,7 +45,7 @@ const LoginPage = () => {
         <div className="card bg-base-100 shadow-xl p-10 h-fit w-full">
           <h2 className="card-title mb-6">Authenticate to Travel Planner</h2>
           <Auth
-            redirectTo={process.env.NEXT_PUBLIC_URL}
+            redirectTo={window.location.origin}
             supabaseClient={supabaseClient}
             providers={["google"]}
             appearance={appearance}
