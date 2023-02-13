@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -35,9 +35,13 @@ const LoginPage = () => {
   const user = useUser();
   const router = useRouter();
 
+  const [redirectUrl, setRedirectUrl] = useState("/");
+
   useEffect(() => {
     if (user) router.push("/");
   }, [user]);
+
+  useEffect(() => setRedirectUrl(window.location.origin), []);
 
   return (
     <Layout title="Login" description="Login to Travel Planner">
@@ -45,7 +49,7 @@ const LoginPage = () => {
         <div className="card bg-base-100 shadow-xl p-10 h-fit w-full">
           <h2 className="card-title mb-6">Authenticate to Travel Planner</h2>
           <Auth
-            redirectTo={window.location.origin}
+            redirectTo={redirectUrl}
             supabaseClient={supabaseClient}
             providers={["google"]}
             appearance={appearance}
