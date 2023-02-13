@@ -28,7 +28,7 @@ export default function App({
           supabaseClient={supabaseClient}
           initialSession={pageProps.initialSession}
         >
-          <div className={cn(inter.className, poppins.className)}>
+          <div className={cn(inter.className)}>
             <Component {...pageProps} />
           </div>
         </SessionContextProvider>

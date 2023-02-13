@@ -17,6 +17,7 @@
     "@next/font": "13.1.6",
     "@supabase/auth-helpers-nextjs": "^0.5.4",
     "@supabase/auth-helpers-react": "^0.3.1",
+    "@supabase/auth-ui-react": "^0.2.7",
     "@supabase/supabase-js": "^2.7.1",
     "@tanstack/react-query": "^4.24.4",
     "@types/node": "18.13.0",
@@ -29,7 +30,8 @@
     "next": "13.1.6",
     "nprogress": "^0.2.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-icons": "^4.7.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.51.0",
