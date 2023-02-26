@@ -27,7 +27,7 @@ export const Layout = ({
       </Head>
       <div className="flex flex-col h-screen justify-between">
         <Navbar />
-        <main className="flex-grow">{children}</main>
+        <main className="flex-grow h-[calc(100vh-100px)]">{children}</main>
         <Footer />
       </div>
     </>

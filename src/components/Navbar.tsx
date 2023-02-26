@@ -1,29 +1,20 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
-import { FiChevronDown, FiChevronRight, FiMenu } from "react-icons/fi";
+import { FiMenu } from "react-icons/fi";
 
 const menuItems = [
   {
-    name: "Item 1",
-    href: "/",
+    name: "Routes",
+    href: "/?tab=routes",
   },
   {
-    name: "Item 2",
-    items: [
-      {
-        name: "Item 2.1",
-        href: "/",
-      },
-      {
-        name: "Item 2.2",
-        href: "/",
-      },
-    ],
+    name: "Tickets",
+    href: "/?tab=tickets",
   },
   {
-    name: "Item 3",
-    href: "/",
+    name: "Hotels",
+    href: "/?tab=hotels",
   },
 ];
 
@@ -45,53 +36,21 @@ export const Navbar = () => {
             className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
           >
             {menuItems.map((item) => (
-              <li tabIndex={item.items ? 0 : undefined} key={item.name}>
-                {item.items ? (
-                  <a className="justify-between">
-                    {item.name}
-                    <FiChevronRight />
-                  </a>
-                ) : (
-                  <Link href={item.href}>{item.name}</Link>
-                )}
-                {item.items && (
-                  <ul className="p-2">
-                    {item.items.map((subItem) => (
-                      <li key={subItem.name}>
-                        <Link href={subItem.href}>{subItem.name}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+              <li key={item.name}>
+                <Link href={item.href}>{item.name}</Link>
               </li>
             ))}
           </ul>
         </div>
         <Link href="/" className="btn btn-ghost normal-case text-xl">
-          app name
+          TopTrip
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           {menuItems.map((item) => (
-            <li tabIndex={item.items ? 0 : undefined} key={item.name}>
-              {item.items ? (
-                <a>
-                  {item.name}
-                  <FiChevronDown />
-                </a>
-              ) : (
-                <Link href={item.href}>{item.name}</Link>
-              )}
-              {item.items && (
-                <ul className="p-2">
-                  {item.items.map((subItem) => (
-                    <li key={subItem.name}>
-                      <Link href={subItem.href}>{subItem.name}</Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
+            <li key={item.name}>
+              <Link href={item.href}>{item.name}</Link>
             </li>
           ))}
         </ul>
@@ -129,7 +88,7 @@ export const Navbar = () => {
             </ul>
           </div>
         ) : (
-          <Link href="/login" className="btn btn-primary">
+          <Link href="/login" className="btn btn-primary btn-outline">
             Get started
           </Link>
         )}
