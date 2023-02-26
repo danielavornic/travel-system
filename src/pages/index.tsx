@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { GrPowerCycle } from "react-icons/gr";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Select from "react-select";
 import cn from "classnames";
 
 import { TicketType } from "@/types";
@@ -31,6 +32,12 @@ const tabs = [
   },
 ];
 
+// For testing purposes
+const options = [
+  { value: "1", label: "1" },
+  { value: "hi", label: "hi" },
+];
+
 const TabItem = ({ tab, name, activeTab }: { tab: Tabs; name: string; activeTab: Tabs }) => {
   const isActive = activeTab === tab;
 
@@ -49,6 +56,39 @@ const TabItem = ({ tab, name, activeTab }: { tab: Tabs; name: string; activeTab:
   );
 };
 
+const SelectInput = ({
+  value,
+  options,
+  onChange,
+}: {
+  value: string;
+  options: { value: string; label: string }[];
+  onChange: (e: string) => void;
+}) => (
+  <Select
+    options={options}
+    classNames={{
+      control: () => "input input-bordered",
+      valueContainer: () => "h-full",
+    }}
+    components={{
+      IndicatorSeparator: () => null,
+      IndicatorsContainer: () => null,
+    }}
+    theme={(theme) => ({
+      ...theme,
+      borderRadius: 8,
+      colors: {
+        ...theme.colors,
+        primary: "#66cc8a",
+      },
+    })}
+    value={options.find((option) => option.value === value)}
+    placeholder="Start typing..."
+    onChange={(e) => e && e?.value && onChange(e.value)}
+  />
+);
+
 const RouteForm = () => {
   const { state, dispatch } = useRoutesInputs();
   const { origin, destination } = state;
@@ -58,14 +98,12 @@ const RouteForm = () => {
   };
 
   const handleSetOrigin = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) =>
-      dispatch({ type: "SET_ORIGIN", payload: event.target.value }),
+    (o: string) => dispatch({ type: "SET_ORIGIN", payload: o }),
     [dispatch],
   );
 
   const handleSetDestination = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) =>
-      dispatch({ type: "SET_DESTINATION", payload: event.target.value }),
+    (o: string) => dispatch({ type: "SET_DESTINATION", payload: o }),
     [dispatch],
   );
 
@@ -79,12 +117,7 @@ const RouteForm = () => {
           <label className="label">
             <span className="label-text">Origin</span>
           </label>
-          <input
-            type="text"
-            className="input input-bordered"
-            value={origin}
-            onChange={(e) => handleSetOrigin(e)}
-          />
+          <SelectInput value={origin} options={options} onChange={handleSetOrigin} />
         </div>
         <button
           className="btn btn-outline bg-white mx-2 hover:bg-gray-100"
@@ -96,12 +129,7 @@ const RouteForm = () => {
           <label className="label">
             <span className="label-text">Destination</span>
           </label>
-          <input
-            type="text"
-            className="input input-bordered"
-            value={destination}
-            onChange={(e) => handleSetDestination(e)}
-          />
+          <SelectInput value={destination} options={options} onChange={handleSetDestination} />
         </div>
       </div>
       <button className="btn btn-primary mt-4">Search</button>
@@ -118,14 +146,12 @@ const TicketForm = () => {
   };
 
   const handleSetOrigin = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) =>
-      dispatch({ type: "SET_ORIGIN", payload: event.target.value }),
+    (o: string) => dispatch({ type: "SET_ORIGIN", payload: o }),
     [dispatch],
   );
 
   const handleSetDestination = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) =>
-      dispatch({ type: "SET_DESTINATION", payload: event.target.value }),
+    (o: string) => dispatch({ type: "SET_DESTINATION", payload: o }),
     [dispatch],
   );
 
@@ -172,12 +198,7 @@ const TicketForm = () => {
               <label className="label">
                 <span className="label-text">Origin</span>
               </label>
-              <input
-                type="text"
-                className="input input-bordered"
-                value={origin}
-                onChange={(e) => handleSetOrigin(e)}
-              />
+              <SelectInput value={origin} options={options} onChange={handleSetOrigin} />
             </div>
             <button
               className="btn btn-outline bg-white mx-2 hover:bg-gray-100"
@@ -189,12 +210,7 @@ const TicketForm = () => {
               <label className="label">
                 <span className="label-text">Destination</span>
               </label>
-              <input
-                type="text"
-                className="input input-bordered"
-                value={destination}
-                onChange={(e) => handleSetDestination(e)}
-              />
+              <SelectInput value={destination} options={options} onChange={handleSetDestination} />
             </div>
           </div>
           <div className="flex items-end w-full flex-1 mr-6">
@@ -239,8 +255,7 @@ const HotelForm = () => {
   };
 
   const handleSetLocation = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) =>
-      dispatch({ type: "SET_LOCATION", payload: event.target.value }),
+    (o: string) => dispatch({ type: "SET_LOCATION", payload: o }),
     [dispatch],
   );
 
@@ -264,12 +279,7 @@ const HotelForm = () => {
           <label className="label">
             <span className="label-text">Destination</span>
           </label>
-          <input
-            type="text"
-            className="input input-bordered"
-            value={location}
-            onChange={(e) => handleSetLocation(e)}
-          />
+          <SelectInput value={location} options={options} onChange={handleSetLocation} />
         </div>
         <div className="form-control mr-2">
           <label className="label">
