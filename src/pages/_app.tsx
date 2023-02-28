@@ -7,6 +7,7 @@ import { Hydrate, QueryClient, QueryClientProvider } from "@tanstack/react-query
 import cn from "classnames";
 
 import "@/styles/globals.css";
+import { SharedProvider } from "@/contexts";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
@@ -28,9 +29,11 @@ export default function App({
           supabaseClient={supabaseClient}
           initialSession={pageProps.initialSession}
         >
-          <div className={cn(inter.className)}>
-            <Component {...pageProps} />
-          </div>
+          <SharedProvider>
+            <div className={cn(inter.className)}>
+              <Component {...pageProps} />
+            </div>
+          </SharedProvider>
         </SessionContextProvider>
       </Hydrate>
     </QueryClientProvider>
