@@ -11,7 +11,7 @@ interface LayoutProps {
 }
 
 export const Layout = ({
-  title = "Travel Planner",
+  title,
   description = "Application for planning your trips",
   keywords = "travel, planner, trips",
   children,
@@ -19,7 +19,7 @@ export const Layout = ({
   return (
     <>
       <Head>
-        <title>{title ? `${title} | Travel Planner` : "Travel Planner"}</title>
+        <title>{title ? `${title} | TopTrip` : "TopTrip"}</title>
         <meta name="description" content={description} />
         <meta name="keywords" content={keywords} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
