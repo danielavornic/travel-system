@@ -30,9 +30,10 @@ const Hotels = () => {
     },
   });
 
-  useEffect(() => {
-    dispatch({ type: "SELECT_HOTEL", payload: undefined });
-  }, [destination, startDate, endDate]);
+  useEffect(
+    () => dispatch({ type: "SELECT_HOTEL", payload: undefined }),
+    [destination, startDate, endDate],
+  );
 
   return (
     <Layout title="Hotels" hideFooter>
