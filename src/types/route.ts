@@ -5,6 +5,7 @@ export interface Route {
   mode: string;
   indicativePrices: IndicativePrice[];
   paths?: string[];
+  label?: string;
 }
 
 export enum RouteMode {

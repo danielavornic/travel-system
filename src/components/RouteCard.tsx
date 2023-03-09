@@ -8,16 +8,15 @@ import { VechicleIcon } from "@/components";
 
 interface RouteCardProps extends React.HTMLAttributes<HTMLDivElement> {
   route: Route;
-  label?: string;
 }
 
-export const RouteCard = ({ route, label }: RouteCardProps) => {
+export const RouteCard = ({ route }: RouteCardProps) => {
   const { state, dispatch } = useSharedInputs();
   const { selectedRoute } = state;
 
   if (!route) return null;
 
-  const { name, duration, indicativePrices } = route;
+  const { name, duration, indicativePrices, label } = route;
   const isSelected = selectedRoute?.name === route.name;
   const vehicles = extractVehiclesFromName(name);
   const { minPrice, maxPrice } = getPriceRange(indicativePrices);
