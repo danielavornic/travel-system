@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { cities } from "@/api";
+import { cities, hotels } from "@/api";
 import { useSharedInputs } from "@/hooks";
 import { SelectInput } from "@/components";
 
@@ -17,7 +17,13 @@ export const HotelForm = () => {
     queryKey: ["destinationOptions", destinationInput],
     queryFn: () => cities.autocomplete(destinationInput),
     enabled: !!destinationInput && destinationInput.length > 1,
-    select: (data) => data.map((city: any) => ({ value: city.name, label: city.detailedName })),
+    select: (data) => data.map((city: any) => ({ value: city.city, label: city.formatted })),
+  });
+
+  const { data: hotelsList } = useQuery({
+    queryKey: ["hotels", state.destinationId, state.startDate, state.endDate],
+    queryFn: () => hotels.getList(state.destination),
+    enabled: !!state.destination && !!state.startDate && !!state.endDate,
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -26,6 +32,10 @@ export const HotelForm = () => {
 
   const handleSetDestination = (d: string) => {
     dispatch({ type: "SET_DESTINATION", payload: d });
+    dispatch({
+      type: "SET_DESTINATION_ID",
+      payload: destinationOptions?.find((option: any) => option.value === d)?.place_id,
+    });
     if (d === state.origin) {
       dispatch({ type: "SET_ORIGIN", payload: state.destination });
     }

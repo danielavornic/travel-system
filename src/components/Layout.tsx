@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import cn from "classnames";
 
 const Navbar = dynamic(() => import("./Navbar"));
 const Footer = dynamic(() => import("./Footer"));
@@ -8,6 +9,7 @@ interface LayoutProps {
   title?: string;
   description?: string;
   keywords?: string;
+  hideFooter?: boolean;
 }
 
 export const Layout = ({
@@ -15,6 +17,7 @@ export const Layout = ({
   description = "Application for planning your trips",
   keywords = "travel, planner, trips",
   children,
+  hideFooter = false,
 }: React.PropsWithChildren<LayoutProps>) => {
   return (
     <>
@@ -27,8 +30,14 @@ export const Layout = ({
       </Head>
       <div className="flex flex-col h-screen justify-between">
         <Navbar />
-        <main className="flex-grow h-[calc(100vh-100px)]">{children}</main>
-        <Footer />
+        <main
+          className={cn("flex-grow h-[calc(100vh-100px)]", {
+            "h-[calc(100vh-64px)]": hideFooter,
+          })}
+        >
+          {children}
+        </main>
+        {!hideFooter && <Footer />}
       </div>
     </>
   );

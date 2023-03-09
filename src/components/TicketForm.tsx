@@ -23,7 +23,7 @@ export const TicketForm = () => {
     select: (data) =>
       data
         .filter((city: any) => city.name !== destination)
-        .map((city: any) => ({ value: city.name, label: city.detailedName })),
+        .map((city: any) => ({ value: city.city, label: city.formatted })),
   });
 
   const { data: destinationOptions } = useQuery({
@@ -33,7 +33,7 @@ export const TicketForm = () => {
     select: (data) =>
       data
         .filter((city: any) => city.name !== origin)
-        .map((city: any) => ({ value: city.name, label: city.detailedName })),
+        .map((city: any) => ({ value: city.city, label: city.formatted })),
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,7 +41,13 @@ export const TicketForm = () => {
   };
 
   const handleSetOrigin = (o: string) => dispatch({ type: "SET_ORIGIN", payload: o });
-  const handleSetDestination = (d: string) => dispatch({ type: "SET_DESTINATION", payload: d });
+  const handleSetDestination = (d: string) => {
+    dispatch({ type: "SET_DESTINATION", payload: d });
+    dispatch({
+      type: "SET_DESTINATION_ID",
+      payload: destinationOptions?.find((option: any) => option.value === d)?.place_id,
+    });
+  };
   const handleSetStartDate = (date: Date) => dispatch({ type: "SET_START_DATE", payload: date });
   const handleSetEndDate = (date: Date) => dispatch({ type: "SET_END_DATE", payload: date });
 

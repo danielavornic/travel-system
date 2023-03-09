@@ -1,11 +1,15 @@
-import { amadeus } from "@/lib";
+import { geoapify } from "@/lib";
 
 export const cities = {
   autocomplete: async (keyword: string) => {
-    const { data } = await amadeus.referenceData.locations.get({
-      keyword,
-      subType: "CITY",
+    const { data } = await geoapify.get("/geocode/autocomplete", {
+      params: {
+        text: keyword,
+        type: "city",
+        limit: 5,
+      },
     });
-    return data;
+
+    return data.features.map((feature: any) => feature.properties);
   },
 };

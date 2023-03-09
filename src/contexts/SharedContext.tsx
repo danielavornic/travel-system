@@ -1,5 +1,5 @@
 import { createContext, useReducer } from "react";
-import { TicketType } from "@/types";
+import { Route, TicketType } from "@/types";
 
 type SharedState = {
   origin: string;
@@ -7,6 +7,9 @@ type SharedState = {
   startDate?: Date;
   endDate?: Date;
   ticketType: TicketType;
+  destinationId?: string;
+  searchRoutes?: () => void;
+  selectedRoute?: Route;
 };
 
 type SharedAction =
@@ -15,7 +18,9 @@ type SharedAction =
   | { type: "SET_START_DATE"; payload: Date }
   | { type: "SET_END_DATE"; payload: Date }
   | { type: "SWAP_LOCATIONS" }
-  | { type: "SET_TICKET_TYPE"; payload: TicketType };
+  | { type: "SET_TICKET_TYPE"; payload: TicketType }
+  | { type: "SET_DESTINATION_ID"; payload: string }
+  | { type: "SELECT_ROUTE"; payload: Route | undefined };
 
 const initialState: SharedState = {
   origin: "",
@@ -23,6 +28,9 @@ const initialState: SharedState = {
   startDate: undefined,
   endDate: undefined,
   ticketType: TicketType.OneWay,
+  destinationId: undefined,
+  searchRoutes: undefined,
+  selectedRoute: undefined,
 };
 
 export const SharedContext = createContext<{
@@ -72,6 +80,19 @@ const sharedReducer = (state: SharedState, action: SharedAction) => {
         ...state,
         origin: state.destination,
         destination: state.origin,
+        selectedRoute: undefined,
+      };
+    }
+    case "SET_DESTINATION_ID": {
+      return {
+        ...state,
+        destinationId: action.payload,
+      };
+    }
+    case "SELECT_ROUTE": {
+      return {
+        ...state,
+        selectedRoute: action.payload,
       };
     }
     default: {

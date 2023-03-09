@@ -6,3 +6,7 @@ export * from "./SwapButton";
 export * from "./RouteForm";
 export * from "./TicketForm";
 export * from "./HotelForm";
+export * from "./VechicleIcon";
+export * from "./RouteCard";
+export * from "./Spinner";
+export * from "./Map";
