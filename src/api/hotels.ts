@@ -25,7 +25,11 @@ export const hotels = {
       hotel.details = details;
     }
 
-    return sorted;
+    return {
+      lat: data.lat,
+      lng: data.lng,
+      hotels: sorted,
+    };
   },
 
   getDetails: async (id: string) => {

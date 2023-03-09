@@ -1,5 +1,5 @@
 import { createContext, useReducer } from "react";
-import { Route, TicketType } from "@/types";
+import { Hotel, Route, TicketType } from "@/types";
 
 type SharedState = {
   origin: string;
@@ -10,6 +10,7 @@ type SharedState = {
   destinationId?: string;
   searchRoutes?: () => void;
   selectedRoute?: Route;
+  selectedHotel?: Hotel;
 };
 
 type SharedAction =
@@ -20,7 +21,8 @@ type SharedAction =
   | { type: "SWAP_LOCATIONS" }
   | { type: "SET_TICKET_TYPE"; payload: TicketType }
   | { type: "SET_DESTINATION_ID"; payload: string }
-  | { type: "SELECT_ROUTE"; payload: Route | undefined };
+  | { type: "SELECT_ROUTE"; payload: Route | undefined }
+  | { type: "SELECT_HOTEL"; payload: Hotel | undefined };
 
 const initialState: SharedState = {
   origin: "",
@@ -31,6 +33,7 @@ const initialState: SharedState = {
   destinationId: undefined,
   searchRoutes: undefined,
   selectedRoute: undefined,
+  selectedHotel: undefined,
 };
 
 export const SharedContext = createContext<{
@@ -93,6 +96,12 @@ const sharedReducer = (state: SharedState, action: SharedAction) => {
       return {
         ...state,
         selectedRoute: action.payload,
+      };
+    }
+    case "SELECT_HOTEL": {
+      return {
+        ...state,
+        selectedHotel: action.payload,
       };
     }
     default: {

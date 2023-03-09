@@ -9,4 +9,6 @@ export * from "./HotelForm";
 export * from "./VechicleIcon";
 export * from "./RouteCard";
 export * from "./Spinner";
-export * from "./Map";
+export * from "./RoutesMap";
+export * from "./HotelsMap";
+export * from "./HotelCard";

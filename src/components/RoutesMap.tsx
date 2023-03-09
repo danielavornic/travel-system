@@ -14,7 +14,7 @@ const initViewport = {
   width: "calc(100vw - 512px)",
 };
 
-export const Map = () => {
+export const RoutesMap = () => {
   const [viewstate, setViewstate] = useState<any>(initViewport);
   const mapRef = useRef<any>(null);
 

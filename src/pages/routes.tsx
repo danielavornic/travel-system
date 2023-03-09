@@ -5,7 +5,7 @@ import { Route } from "@/types";
 import { routes as routesApi } from "@/api";
 import { useSharedInputs } from "@/hooks";
 import { processRoutes } from "@/utils";
-import { Layout, RouteForm, RouteCard, Spinner, Map } from "@/components";
+import { Layout, RouteForm, RouteCard, Spinner, RoutesMap } from "@/components";
 
 const Routes = () => {
   const { state, dispatch } = useSharedInputs();
@@ -20,7 +20,9 @@ const Routes = () => {
 
   useEffect(() => {
     if (!data || !data.routes) return;
-    setSortedRoutes(processRoutes(data));
+    const routes = processRoutes(data);
+    setSortedRoutes(routes);
+    dispatch({ type: "SELECT_ROUTE", payload: routes[0] });
   }, [data]);
 
   useEffect(() => {
@@ -31,7 +33,7 @@ const Routes = () => {
   return (
     <Layout title="Routes" hideFooter>
       <div className="border-t border-gray-200 h-full overflow-y-hidden flex">
-        <div className="w-full bg-gray-50 h-full shadow-2xl border-r border-primary overflow-y-auto max-w-lg custom-scrollbar">
+        <div className="w-full bg-gray-50 h-full shadow-2xl border-r border-primary overflow-y-auto max-w-xl custom-scrollbar">
           <div className="sticky top-0 z-40 bg-gray-50 p-6 pb-2">
             <h1 className="text-4xl font-bold mb-6">Routes</h1>
             <RouteForm hideLabel hideButton className="mb-6" />
@@ -57,7 +59,7 @@ const Routes = () => {
             ))}
           </div>
         </div>
-        <Map />
+        <RoutesMap />
       </div>
     </Layout>
   );

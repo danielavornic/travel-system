@@ -9,7 +9,7 @@ export const SelectInput = ({ value, options, onChange, onInputChange }: SelectI
   <Select
     options={options}
     classNames={{
-      control: () => "input input-bordered",
+      control: () => "input input-bordered bg-opacity-60",
       valueContainer: () => "h-full",
     }}
     components={{
