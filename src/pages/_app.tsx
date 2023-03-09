@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Inter, Poppins } from "@next/font/google";
+import { Inter } from "@next/font/google";
 import type { AppProps } from "next/app";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider, Session } from "@supabase/auth-helpers-react";
@@ -9,8 +9,7 @@ import cn from "classnames";
 import "@/styles/globals.css";
 import { SharedProvider } from "@/contexts";
 
-const inter = Inter({ subsets: ["latin"] });
-const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
+const inter = Inter({ subsets: ["latin", "latin-ext"] });
 
 export default function App({
   Component,
