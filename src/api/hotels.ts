@@ -16,8 +16,20 @@ export const hotels = {
     });
 
     const sorted = data.hotelList
-      .sort((a: any, b: any) => b.reviewScore - a.reviewScore)
-      .slice(0, 10);
+      .filter((hotel: any) => hotel.minRate > 0 && hotel.reviewScore > 7.5)
+      .sort((a: any, b: any) => {
+        const minRateA = a.minRate;
+        const minRateB = b.minRate;
+        const ratioA = a.reviewScore / a.details?.numReviews;
+        const ratioB = b.reviewScore / b.details?.numReviews;
+
+        if (minRateA !== minRateB) {
+          return minRateA - minRateB;
+        } else {
+          return ratioB - ratioA;
+        }
+      })
+      .slice(0, 16);
 
     for (let i = 0; i < sorted.length; i++) {
       const hotel = sorted[i];
