@@ -1,5 +1,7 @@
-import { createContext, useReducer } from "react";
+import { createContext, useEffect, useReducer, useRef } from "react";
 import { Hotel, Route, TicketType } from "@/types";
+import { useRouter } from "next/router";
+import { shallowEquals } from "@/utils";
 
 type SharedState = {
   origin: string;
@@ -16,8 +18,8 @@ type SharedState = {
 type SharedAction =
   | { type: "SET_ORIGIN"; payload: string }
   | { type: "SET_DESTINATION"; payload: string }
-  | { type: "SET_START_DATE"; payload: Date }
-  | { type: "SET_END_DATE"; payload: Date }
+  | { type: "SET_START_DATE"; payload: Date | undefined }
+  | { type: "SET_END_DATE"; payload: Date | undefined }
   | { type: "SWAP_LOCATIONS" }
   | { type: "SET_TICKET_TYPE"; payload: TicketType }
   | { type: "SET_DESTINATION_ID"; payload: string }
@@ -112,6 +114,44 @@ const sharedReducer = (state: SharedState, action: SharedAction) => {
 
 export const SharedProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(sharedReducer, initialState);
+  const prevStateRef = useRef(initialState);
+
+  useEffect(() => {
+    const { origin, destination, startDate, endDate, ticketType } = JSON.parse(
+      localStorage.getItem("state") || "{}",
+    );
+    const today = new Date();
+    const start = new Date(startDate as string);
+    const end = new Date(endDate as string);
+
+    if (origin) {
+      dispatch({ type: "SET_ORIGIN", payload: origin as string });
+    }
+
+    if (destination) {
+      dispatch({ type: "SET_DESTINATION", payload: destination as string });
+    }
+
+    if (startDate) {
+      dispatch({ type: "SET_START_DATE", payload: start > today ? start : undefined });
+    }
+
+    if (endDate) {
+      dispatch({ type: "SET_END_DATE", payload: end > today ? end : undefined });
+    }
+
+    if (ticketType) {
+      dispatch({ type: "SET_TICKET_TYPE", payload: ticketType as TicketType });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!shallowEquals(prevStateRef.current, state)) {
+      localStorage.setItem("state", JSON.stringify(state));
+      prevStateRef.current = state;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
 
   return <SharedContext.Provider value={{ state, dispatch }}>{children}</SharedContext.Provider>;
 };

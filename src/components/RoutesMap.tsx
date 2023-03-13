@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useRef, useState } from "react";
 import MapGL, { Marker } from "react-map-gl";
@@ -98,11 +99,11 @@ export const RoutesMap = () => {
         {
           longitude:
             decodedRoute[decodedRoute.length - 1][
-              decodedRoute[decodedRoute.length - 1].length - 1
+              decodedRoute?.[decodedRoute.length - 1]?.length - 1
             ][0],
           latitude:
             decodedRoute[decodedRoute.length - 1][
-              decodedRoute[decodedRoute.length - 1].length - 1
+              decodedRoute?.[decodedRoute.length - 1]?.length - 1
             ][1],
         },
       ]);
