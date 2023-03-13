@@ -92,8 +92,8 @@ export const RoutesMap = () => {
 
       setEndpoints([
         {
-          longitude: decodedRoute[0][0][0],
-          latitude: decodedRoute[0][0][1],
+          longitude: decodedRoute[0]?.[0][0],
+          latitude: decodedRoute[0]?.[0][1],
         },
         {
           longitude:

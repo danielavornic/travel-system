@@ -38,11 +38,6 @@ export const HotelCard = ({ hotel }: HotelCardProps) => {
           <h4 className="text-lg font-bold mt-4 mb-2">{name}</h4>
           <p className="text-sm text-gray-500">{address}</p>
         </div>
-        <div className="mt-6">
-          <a href={hotelUrl} target="_blank" rel="noreferrer">
-            <button className="btn btn-sm btn-primary ">View More</button>
-          </a>
-        </div>
       </div>
     </div>
   );

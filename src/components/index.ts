@@ -12,3 +12,4 @@ export * from "./Spinner";
 export * from "./RoutesMap";
 export * from "./HotelsMap";
 export * from "./HotelCard";
+export * from "./HotelPopup";
