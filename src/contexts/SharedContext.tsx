@@ -1,6 +1,5 @@
 import { createContext, useEffect, useReducer, useRef } from "react";
 import { Hotel, Route, TicketType } from "@/types";
-import { useRouter } from "next/router";
 import { shallowEquals } from "@/utils";
 
 type SharedState = {
