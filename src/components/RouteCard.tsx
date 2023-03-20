@@ -26,7 +26,7 @@ export const RouteCard = ({ route }: RouteCardProps) => {
   return (
     <div
       className={cn(
-        "flex flex-col w-full h-full relative cursor-pointer py-4 px-6 border bg-white rounded-lg",
+        "flex flex-col w-full h-full relative cursor-pointer py-4 px-6 shadow-md shadow-gray-100 bg-white rounded-lg",
         {
           "border-primary": isSelected,
           "border-gray-200": !isSelected,

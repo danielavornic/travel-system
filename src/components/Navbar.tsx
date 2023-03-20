@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import Image from "next/image";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
@@ -42,6 +43,7 @@ export const Navbar = () => {
             </ul>
           </div>
           <Link href="/" className="btn btn-ghost normal-case text-xl">
+            <img src="/images/marker-green.svg" alt="TopTrip" className="w-5 mr-1" />
             TopTrip
           </Link>
         </div>
@@ -90,9 +92,14 @@ export const Navbar = () => {
               </ul>
             </div>
           ) : (
-            <Link href="/login" className="btn btn-primary btn-outline float-right">
-              Get started
-            </Link>
+            <div className="flex space-x-2 float-right">
+              <Link href="/register" className="btn btn-primary btn-link float-right btn-sm">
+                Register
+              </Link>
+              <Link href="/login" className="btn btn-primary btn-outline float-right btn-sm">
+                Login
+              </Link>
+            </div>
           )}
         </div>
       </div>

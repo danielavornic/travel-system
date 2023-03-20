@@ -44,16 +44,21 @@ const LoginPage = () => {
   useEffect(() => setRedirectUrl(window.location.origin), []);
 
   return (
-    <Layout title="Login" description="Login to Travel Planner">
-      <div className="flex justify-center items-center max-w-screen-sm mx-auto h-full">
-        <div className="card bg-base-100 shadow-xl p-10 h-fit w-full">
-          <h2 className="card-title mb-6">Authenticate to Travel Planner</h2>
-          <Auth
-            redirectTo={redirectUrl}
-            supabaseClient={supabaseClient}
-            providers={["google"]}
-            appearance={appearance}
-          />
+    <Layout title="Login" description="Login to Travel Planner" hideFooter>
+      <div
+        className="w-full h-full bg-cover "
+        style={{ backgroundImage: 'url("/images/home-bg.png")' }}
+      >
+        <div className="flex justify-center items-center max-w-screen-sm mx-auto pt-36">
+          <div className="card bg-base-100 shadow-lg shadow-gray-100 p-10 h-fit w-full">
+            <h2 className="card-title mb-6">Authenticate to TopTrip</h2>
+            <Auth
+              redirectTo={redirectUrl}
+              supabaseClient={supabaseClient}
+              providers={["google"]}
+              appearance={appearance}
+            />
+          </div>
         </div>
       </div>
     </Layout>

@@ -33,7 +33,7 @@ const TabItem = ({ tab, name, activeTab }: { tab: Tabs; name: string; activeTab:
       <span
         className={cn("badge badge-lg", {
           "bg-primary border-primary": isActive,
-          "bg-gray-500 border-gray-500": !isActive,
+          "bg-white border-primary text-primary": !isActive,
           "mr-4": tab !== Tabs.Hotels,
         })}
       >
@@ -48,25 +48,30 @@ export default function Home() {
   const tab = router.query?.tab || Tabs.Routes;
 
   return (
-    <Layout>
-      <div className="flex flex-col items-center h-full pt-32">
+    <Layout hideFooter>
+      <div
+        className="flex flex-col items-center h-full pt-40 bg-opacity-50 bg-cover bg-bottom"
+        style={{ backgroundImage: 'url("/images/home-bg.png")' }}
+      >
         <div className="text-center mb-10">
-          <h1 className="text-6xl font-extrabold mb-8">TopTrip</h1>
-          <p className="text-xl max-w-xl">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo a iure placeat officiis
-            vitae!
+          <h1 className="text-6xl font-extrabold mb-10">TopTrip</h1>
+          <p className="text-xl max-w-2xl">
+            Discover how you can save money on your next trip by using TopTrip - your ultimate
+            travel companion for seamless trip planning and booking.
           </p>
         </div>
-        <div className="max-w-screen-xl w-full bg-gray-300 p-4 rounded-lg mt-8">
-          <div className="flex items-center">
-            {tabs.map((item, index) => (
-              <TabItem key={index} {...item} activeTab={tab as Tabs} />
-            ))}
-          </div>
-          <div className="mt-6">
-            {tab === Tabs.Routes && <RouteForm />}
-            {tab === Tabs.Tickets && <TicketForm />}
-            {tab === Tabs.Hotels && <HotelForm />}
+        <div className="max-w-screen-xl w-full  mt-8 bg-gray-50 p-7 rounded-xl bg-opacity-50">
+          <div className="bg-white py-5 px-6 rounded-xl shadow-md shadow-gray-100 bg-opacity-40">
+            <div className="flex items-center">
+              {tabs.map((item, index) => (
+                <TabItem key={index} {...item} activeTab={tab as Tabs} />
+              ))}
+            </div>
+            <div className="mt-6">
+              {tab === Tabs.Routes && <RouteForm />}
+              {tab === Tabs.Tickets && <TicketForm />}
+              {tab === Tabs.Hotels && <HotelForm />}
+            </div>
           </div>
         </div>
       </div>
