@@ -1,5 +1,5 @@
 import { createContext, useEffect, useReducer, useRef } from "react";
-import { Hotel, Route, TicketType } from "@/types";
+import { Hotel, Route, TicketMode, TicketType } from "@/types";
 import { shallowEquals } from "@/utils";
 
 type SharedState = {
@@ -12,6 +12,7 @@ type SharedState = {
   searchRoutes?: () => void;
   selectedRoute?: Route;
   selectedHotel?: Hotel;
+  ticketMode?: TicketMode;
 };
 
 type SharedAction =
@@ -23,7 +24,8 @@ type SharedAction =
   | { type: "SET_TICKET_TYPE"; payload: TicketType }
   | { type: "SET_DESTINATION_ID"; payload: string }
   | { type: "SELECT_ROUTE"; payload: Route | undefined }
-  | { type: "SELECT_HOTEL"; payload: Hotel | undefined };
+  | { type: "SELECT_HOTEL"; payload: Hotel | undefined }
+  | { type: "SET_TICKET_MODE"; payload: TicketMode | undefined };
 
 const initialState: SharedState = {
   origin: "",
@@ -35,6 +37,7 @@ const initialState: SharedState = {
   searchRoutes: undefined,
   selectedRoute: undefined,
   selectedHotel: undefined,
+  ticketMode: TicketMode.Bus,
 };
 
 export const SharedContext = createContext<{
@@ -79,6 +82,12 @@ const sharedReducer = (state: SharedState, action: SharedAction) => {
         ticketType: action.payload,
       };
     }
+    case "SET_TICKET_MODE": {
+      return {
+        ...state,
+        ticketMode: action.payload,
+      };
+    }
     case "SWAP_LOCATIONS": {
       return {
         ...state,
@@ -116,7 +125,7 @@ export const SharedProvider = ({ children }: { children: React.ReactNode }) => {
   const prevStateRef = useRef(initialState);
 
   useEffect(() => {
-    const { origin, destination, startDate, endDate, ticketType } = JSON.parse(
+    const { origin, destination, startDate, endDate, ticketType, ticketMode } = JSON.parse(
       localStorage.getItem("state") || "{}",
     );
     const today = new Date();
@@ -141,6 +150,10 @@ export const SharedProvider = ({ children }: { children: React.ReactNode }) => {
 
     if (ticketType) {
       dispatch({ type: "SET_TICKET_TYPE", payload: ticketType as TicketType });
+    }
+
+    if (ticketMode) {
+      dispatch({ type: "SET_TICKET_MODE", payload: ticketMode as TicketMode });
     }
   }, []);
 
