@@ -5,13 +5,24 @@ import "react-datepicker/dist/react-datepicker.css";
 import cn from "classnames";
 
 import { cities } from "@/api";
-import { useSharedInputs } from "@/hooks";
+import { useAppContext } from "@/hooks";
 import { SelectInput, SwapButton } from "@/components";
 import { TicketType } from "@/types";
 
 export const TicketForm = () => {
-  const { state, dispatch } = useSharedInputs();
-  const { ticketType, origin, destination, startDate, endDate } = state;
+  const {
+    ticketType,
+    origin,
+    destination,
+    startDate,
+    endDate,
+    setOrigin,
+    setDestination,
+    setDestinationId,
+    setStartDate,
+    setEndDate,
+    setTicketType,
+  } = useAppContext();
 
   const [originInput, setOriginInput] = useState(origin);
   const [destinationInput, setDestinationInput] = useState(destination);
@@ -40,16 +51,13 @@ export const TicketForm = () => {
     e.preventDefault();
   };
 
-  const handleSetOrigin = (o: string) => dispatch({ type: "SET_ORIGIN", payload: o });
+  const handleSetOrigin = (o: string) => setOrigin(o);
   const handleSetDestination = (d: string) => {
-    dispatch({ type: "SET_DESTINATION", payload: d });
-    dispatch({
-      type: "SET_DESTINATION_ID",
-      payload: destinationOptions?.find((option: any) => option.value === d)?.place_id,
-    });
+    setDestination(d);
+    setDestinationId(destinationOptions?.find((option: any) => option.value === d)?.place_id);
   };
-  const handleSetStartDate = (date: Date) => dispatch({ type: "SET_START_DATE", payload: date });
-  const handleSetEndDate = (date: Date) => dispatch({ type: "SET_END_DATE", payload: date });
+  const handleSetStartDate = (date: Date) => setStartDate(date);
+  const handleSetEndDate = (date: Date) => setEndDate(date);
 
   useEffect(() => {
     setOriginInput(origin);
@@ -68,16 +76,16 @@ export const TicketForm = () => {
               "text-gray-500": ticketType === TicketType.Return,
               underline: ticketType === TicketType.OneWay,
             })}
-            onClick={() => dispatch({ type: "SET_TICKET_TYPE", payload: TicketType.OneWay })}
+            onClick={() => setTicketType(TicketType.OneWay)}
           >
             One-way
           </p>
           <p
             className={cn("cursor-pointer", {
-              "text-gray-500": state.ticketType === TicketType.OneWay,
+              "text-gray-500": ticketType === TicketType.OneWay,
               underline: ticketType === TicketType.Return,
             })}
-            onClick={() => dispatch({ type: "SET_TICKET_TYPE", payload: TicketType.Return })}
+            onClick={() => setTicketType(TicketType.Return)}
           >
             Return
           </p>

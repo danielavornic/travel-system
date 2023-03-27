@@ -6,7 +6,7 @@ import mapboxgl from "mapbox-gl";
 import { decode } from "polyline";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import { useSharedInputs } from "@/hooks";
+import { useAppContext } from "@/hooks";
 
 const initViewport = {
   latitude: 47.0105,
@@ -19,8 +19,7 @@ export const RoutesMap = () => {
   const [viewstate, setViewstate] = useState<any>(initViewport);
   const mapRef = useRef<any>(null);
 
-  const { state } = useSharedInputs();
-  const { selectedRoute } = state;
+  const { selectedRoute } = useAppContext();
   const { paths } = selectedRoute || {
     paths: [],
   };

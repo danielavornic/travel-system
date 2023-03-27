@@ -1,6 +1,6 @@
 import cn from "classnames";
 
-import { useSharedInputs } from "@/hooks";
+import { useAppContext } from "@/hooks";
 import { Hotel } from "@/types";
 
 interface HotelCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -8,14 +8,13 @@ interface HotelCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const HotelCard = ({ hotel }: HotelCardProps) => {
-  const { name, address, imageUrl, hotelUrl } = hotel.details;
+  const { name, address, imageUrl } = hotel.details;
 
-  const { state, dispatch } = useSharedInputs();
-  const { selectedHotel } = state;
+  const { selectedHotel, selectHotel } = useAppContext();
 
   const isSelected = selectedHotel?.details.name === hotel.details.name;
 
-  const handleClick = () => dispatch({ type: "SELECT_HOTEL", payload: hotel });
+  const handleClick = () => selectHotel(hotel);
 
   return (
     <div

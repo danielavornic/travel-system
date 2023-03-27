@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import MapGL, { Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-import { useSharedInputs } from "@/hooks";
+import { useAppContext } from "@/hooks";
 import { Hotel } from "@/types";
 import { HotelPopup } from "./HotelPopup";
 
@@ -16,10 +16,9 @@ interface HotelsMapProps extends React.ComponentPropsWithoutRef<"div"> {
 export const HotelsMap = ({ hotels, viewstate, setViewstate }: HotelsMapProps) => {
   const mapRef = useRef<any>(null);
 
-  const { state, dispatch } = useSharedInputs();
-  const { selectedHotel } = state;
+  const { selectedHotel, selectHotel } = useAppContext();
 
-  const handleClick = (hotel: Hotel) => dispatch({ type: "SELECT_HOTEL", payload: hotel });
+  const handleClick = (hotel: Hotel) => selectHotel(hotel);
 
   useEffect(() => {
     if (selectedHotel) {

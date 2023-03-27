@@ -1,16 +1,14 @@
 import { CgClose } from "react-icons/cg";
 
-import { useSharedInputs } from "@/hooks";
+import { useAppContext } from "@/hooks";
 import { Hotel } from "@/types";
 
 export const HotelPopup = ({ hotel }: { hotel: Hotel }) => {
-  const { dispatch } = useSharedInputs();
+  const { selectHotel } = useAppContext();
   const { details, minRate } = hotel;
   const { name, address, imageUrl, hotelUrl, reviewScore } = details;
 
-  console.log(hotel);
-
-  const handleClick = () => dispatch({ type: "SELECT_HOTEL", payload: undefined });
+  const handleClick = () => selectHotel(undefined);
 
   return (
     <div className="card bg-white w-full max-w-lg mx-auto block p-4 mt-4 shadow-lg">

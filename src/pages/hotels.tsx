@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { hotels as hotelsApi } from "@/api";
-import { useSharedInputs } from "@/hooks";
+import { useAppContext } from "@/hooks";
 import { Layout, Spinner, HotelForm, HotelCard, HotelsMap } from "@/components";
 
 const initViewport = {
@@ -13,8 +13,7 @@ const initViewport = {
 };
 
 const Hotels = () => {
-  const { state, dispatch } = useSharedInputs();
-  const { origin, destination, startDate, endDate } = state;
+  const { origin, destination, startDate, endDate, selectHotel } = useAppContext();
   const [viewstate, setViewstate] = useState<any>(initViewport);
 
   const { data, isLoading } = useQuery({
@@ -30,10 +29,7 @@ const Hotels = () => {
     },
   });
 
-  useEffect(
-    () => dispatch({ type: "SELECT_HOTEL", payload: undefined }),
-    [destination, startDate, endDate],
-  );
+  useEffect(() => selectHotel(undefined), [destination, startDate, endDate]);
 
   return (
     <Layout title="Hotels" hideFooter>

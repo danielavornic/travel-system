@@ -7,7 +7,7 @@ import { Hydrate, QueryClient, QueryClientProvider } from "@tanstack/react-query
 import cn from "classnames";
 
 import "@/styles/globals.css";
-import { SharedProvider } from "@/contexts";
+import { AppProvider } from "@/contexts";
 
 const inter = Inter({ subsets: ["latin", "latin-ext"] });
 
@@ -28,11 +28,11 @@ export default function App({
           supabaseClient={supabaseClient}
           initialSession={pageProps.initialSession}
         >
-          <SharedProvider>
+          <AppProvider>
             <div className={cn(inter.className)}>
               <Component {...pageProps} />
             </div>
-          </SharedProvider>
+          </AppProvider>
         </SessionContextProvider>
       </Hydrate>
     </QueryClientProvider>

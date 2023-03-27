@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import cn from "classnames";
 
 import { cities } from "@/api";
-import { useSharedInputs } from "@/hooks";
+import { useAppContext } from "@/hooks";
 import { SelectInput } from "@/components";
 import Link from "next/link";
 
@@ -22,8 +22,17 @@ export const HotelForm = ({
   className,
   ...props
 }: HotelFormProps) => {
-  const { state, dispatch } = useSharedInputs();
-  const { destination, startDate, endDate } = state;
+  const {
+    origin,
+    destination,
+    startDate,
+    endDate,
+    setDestination,
+    setDestinationId,
+    setOrigin,
+    setStartDate,
+    setEndDate,
+  } = useAppContext();
 
   const [destinationInput, setDestinationInput] = useState(destination);
 
@@ -39,18 +48,15 @@ export const HotelForm = ({
   };
 
   const handleSetDestination = (d: string) => {
-    dispatch({ type: "SET_DESTINATION", payload: d });
-    dispatch({
-      type: "SET_DESTINATION_ID",
-      payload: destinationOptions?.find((option: any) => option.value === d)?.place_id,
-    });
-    if (d === state.origin) {
-      dispatch({ type: "SET_ORIGIN", payload: state.destination });
+    setDestination(d);
+    setDestinationId(destinationOptions?.find((option: any) => option.value === d)?.place_id);
+    if (d === origin) {
+      setOrigin(destination);
     }
   };
 
-  const handleSetStartDate = (date: Date) => dispatch({ type: "SET_START_DATE", payload: date });
-  const handleSetEndDate = (date: Date) => dispatch({ type: "SET_END_DATE", payload: date });
+  const handleSetStartDate = (date: Date) => setStartDate(date);
+  const handleSetEndDate = (date: Date) => setEndDate(date);
 
   useEffect(() => {
     setDestinationInput(destination);

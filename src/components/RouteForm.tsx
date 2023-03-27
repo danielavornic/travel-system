@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { cities } from "@/api";
-import { useSharedInputs } from "@/hooks";
+import { useAppContext } from "@/hooks";
 import { SelectInput, SwapButton } from "@/components";
 
 interface RouteFormProps extends React.HTMLAttributes<HTMLFormElement> {
@@ -12,8 +12,7 @@ interface RouteFormProps extends React.HTMLAttributes<HTMLFormElement> {
 }
 
 export const RouteForm = ({ hideLabel = false, hideButton = false, ...props }: RouteFormProps) => {
-  const { state, dispatch } = useSharedInputs();
-  const { origin, destination } = state;
+  const { origin, destination, setDestination, setDestinationId, setOrigin } = useAppContext();
 
   const [originInput, setOriginInput] = useState(origin);
   const [destinationInput, setDestinationInput] = useState(destination);
@@ -42,13 +41,10 @@ export const RouteForm = ({ hideLabel = false, hideButton = false, ...props }: R
     e.preventDefault();
   };
 
-  const handleSetOrigin = (o: string) => dispatch({ type: "SET_ORIGIN", payload: o });
+  const handleSetOrigin = (o: string) => setOrigin(o);
   const handleSetDestination = (d: string) => {
-    dispatch({ type: "SET_DESTINATION", payload: d });
-    dispatch({
-      type: "SET_DESTINATION_ID",
-      payload: destinationOptions?.find((option: any) => option.value === d)?.place_id,
-    });
+    setDestination(d);
+    setDestinationId(destinationOptions?.find((option: any) => option.value === d)?.place_id);
   };
 
   useEffect(() => {

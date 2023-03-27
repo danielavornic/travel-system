@@ -3,13 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Route } from "@/types";
 import { routes as routesApi } from "@/api";
-import { useSharedInputs } from "@/hooks";
+import { useAppContext } from "@/hooks";
 import { processRoutes } from "@/utils";
 import { Layout, RouteForm, RouteCard, Spinner, RoutesMap } from "@/components";
 
 const Routes = () => {
-  const { state, dispatch } = useSharedInputs();
-  const { origin, destination } = state;
+  const { origin, destination, selectRoute } = useAppContext();
   const [sortedRoutes, setSortedRoutes] = useState<Route[]>([]);
 
   const { data, isLoading } = useQuery({
@@ -22,12 +21,12 @@ const Routes = () => {
     if (!data || !data.routes) return;
     const routes = processRoutes(data);
     setSortedRoutes(routes);
-    dispatch({ type: "SELECT_ROUTE", payload: routes[0] });
+    selectRoute(routes[0]);
   }, [data]);
 
   useEffect(() => {
     setSortedRoutes([]);
-    dispatch({ type: "SELECT_ROUTE", payload: undefined });
+    selectRoute(undefined);
   }, [origin, destination]);
 
   return (

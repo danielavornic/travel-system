@@ -1,7 +1,7 @@
 import cn from "classnames";
 import { IoChevronForwardOutline } from "react-icons/io5";
 
-import { useSharedInputs } from "@/hooks";
+import { useAppContext } from "@/hooks";
 import { Route } from "@/types";
 import { extractVehiclesFromName, getPriceRange, secondsToHours } from "@/utils";
 import { VechicleIcon } from "@/components";
@@ -11,8 +11,7 @@ interface RouteCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const RouteCard = ({ route }: RouteCardProps) => {
-  const { state, dispatch } = useSharedInputs();
-  const { selectedRoute } = state;
+  const { selectedRoute, selectRoute } = useAppContext();
 
   if (!route) return null;
 
@@ -21,7 +20,7 @@ export const RouteCard = ({ route }: RouteCardProps) => {
   const vehicles = extractVehiclesFromName(name);
   const { minPrice, maxPrice } = getPriceRange(indicativePrices);
 
-  const handleClick = () => dispatch({ type: "SELECT_ROUTE", payload: route });
+  const handleClick = () => selectRoute(route);
 
   return (
     <div
