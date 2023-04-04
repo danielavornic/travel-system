@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@next/font": "13.1.6",
+    "@nitro-land/airport-codes": "^1.0.4",
     "@react-google-maps/api": "^2.18.1",
     "@supabase/auth-helpers-nextjs": "^0.5.4",
     "@supabase/auth-helpers-react": "^0.3.1",
@@ -30,6 +31,7 @@
     "classnames": "^2.3.2",
     "daisyui": "^2.50.0",
     "eslint-config-next": "13.1.6",
+    "jquery": "^3.6.4",
     "next": "13.1.6",
     "nprogress": "^0.2.0",
     "polyline": "^0.2.0",

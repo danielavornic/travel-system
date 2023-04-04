@@ -23,3 +23,7 @@ export function shallowEquals(objA: any, objB: any): boolean {
 
   return true;
 }
+
+export const removeDiactrics = (str: string) => {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+};
