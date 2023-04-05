@@ -13,3 +13,4 @@ export * from "./RoutesMap";
 export * from "./HotelsMap";
 export * from "./HotelCard";
 export * from "./HotelPopup";
+export * from "./TicketCard";
