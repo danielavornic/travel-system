@@ -16,7 +16,6 @@ export const tickets = {
           mode: params.mode,
           isTimeManuallySet: false,
           currencyCode: "USD",
-          languageCode: "en",
           paxTypes: params.paxTypes || "paxadult",
           paxAges: "",
           paxCards: "",
@@ -30,7 +29,7 @@ export const tickets = {
 
     const results = data.hops.slice(0, 5).map((hop: any, index: any) => {
       const fare = data.fares[index];
-      const link = JSON.parse(fare.fareBookingData);
+      const link = JSON.parse(fare.fareBookingData)?.deeplink;
       const carrier = data.carriers[hop.marketingCarrier];
 
       return {
