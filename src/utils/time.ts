@@ -5,6 +5,13 @@ export const secondsToHours = (seconds: number) => {
   return `${hours}h ${minutes}m`;
 };
 
+export const minutesToHours = (minutes: number) => {
+  const hours = Math.floor(minutes / 60);
+  const minutesLeft = minutes % 60;
+
+  return `${hours}h ${minutesLeft}m`;
+};
+
 export const formatDate = (date: Date) => {
   /**
    * Convert a date to YYYY-MM-DD format
