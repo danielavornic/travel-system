@@ -19,7 +19,7 @@ const Hotels = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["hotels", destination, startDate, endDate],
     queryFn: () => hotelsApi.getList(destination),
-    enabled: !!destination && !!startDate && !!endDate,
+    enabled: !!destination && !!startDate,
     onSuccess: (data) => {
       setViewstate({
         latitude: data.lat,
