@@ -8,6 +8,7 @@ import { cities } from "@/api";
 import { useAppContext } from "@/hooks";
 import { SelectInput, SwapButton } from "@/components";
 import { TicketType } from "@/types";
+import Link from "next/link";
 
 export const TicketForm = () => {
   const {
@@ -143,8 +144,9 @@ export const TicketForm = () => {
               />
             </div>
           </div>
-          {/* TODO: Add a link to the button just as in RouteForm etc. */}
-          <button className="btn btn-primary mt-4">Search</button>
+          <Link href="/tickets">
+            <button className="btn btn-primary mt-4">Search</button>
+          </Link>
         </div>
       </div>
     </form>
