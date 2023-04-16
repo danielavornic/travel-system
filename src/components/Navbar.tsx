@@ -93,9 +93,6 @@ export const Navbar = () => {
             </div>
           ) : (
             <div className="flex space-x-2 float-right">
-              <Link href="/register" className="btn btn-primary btn-link float-right btn-sm">
-                Register
-              </Link>
               <Link href="/login" className="btn btn-primary btn-outline float-right btn-sm">
                 Login
               </Link>
