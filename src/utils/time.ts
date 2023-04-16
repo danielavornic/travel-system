@@ -25,3 +25,14 @@ export const formatDate = (date: Date) => {
 
   return `${year}-${month}-${day}`;
 };
+
+export const convertTime = (timeString: string): string => {
+  /**
+   * Converts a time string in the format "yyyy-MM-ddTHH:mm:ss.sssZ" to "yyyy-MM-ddTHH:mm",
+   * @param {string} timeString - The time string to convert."yyyy-MM-ddTHH:mm:ss.sssZ"
+   * @returns {string} The converted time string in the format "yyyy-MM-ddTHH:mm".
+   */
+  const date = new Date(timeString);
+  date.setHours(date.getHours() + 11);
+  return date.toISOString().slice(0, 16);
+};
