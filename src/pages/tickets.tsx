@@ -12,7 +12,7 @@ const Tickets = () => {
   const { origin, destination, startDate, endDate, ticketMode } = useAppContext();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["tickets", origin, destination, startDate, endDate],
+    queryKey: ["tickets", origin, destination, startDate, endDate, ticketMode],
     queryFn: () => {
       const origin2 =
         ticketMode === TicketMode.Flight
@@ -61,9 +61,20 @@ const Tickets = () => {
 
         {data && (
           <div className="w-full mt-12 space-y-6">
-            {data.map((ticket: any, idx: number) => (
-              <TicketCard key={idx} {...ticket} />
-            ))}
+            {data.length === 0 ? (
+              <div className="mt-16 space-y-2">
+                <p className="text-2xl font-bold">No tickets found</p>
+                <p className="text-lg">
+                  Sorry! We were not able to find any tickets that matched your search.
+                </p>
+              </div>
+            ) : (
+              <>
+                {data.map((ticket: any, idx: number) => (
+                  <TicketCard key={idx} {...ticket} />
+                ))}
+              </>
+            )}
           </div>
         )}
       </div>
