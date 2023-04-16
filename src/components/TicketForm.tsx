@@ -144,7 +144,6 @@ export const TicketForm = () => {
               />
             </div>
           </div>
-          {/* TODO: Add a link to the button just as in RouteForm etc. */}
           <Link href="/tickets">
             <button className="btn btn-primary mt-4">Search</button>
           </Link>
