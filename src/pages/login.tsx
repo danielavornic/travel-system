@@ -49,7 +49,7 @@ const LoginPage = () => {
         className="w-full h-full bg-cover "
         style={{ backgroundImage: 'url("/images/home-bg.png")' }}
       >
-        <div className="flex justify-center items-center max-w-screen-sm mx-auto pt-36">
+        <div className="flex justify-center items-center max-w-screen-sm mx-auto pt-28">
           <div className="card bg-base-100 shadow-lg shadow-gray-100 p-10 h-fit w-full">
             <h2 className="card-title mb-6">Authenticate to TopTrip</h2>
             <Auth
