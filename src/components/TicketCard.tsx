@@ -44,7 +44,14 @@ export const TicketCard = ({
       <div className="space-y-4">
         <div className="flex space-x-4 items-center">
           {carrier?.iconUrl && (
-            <img src={`https:${carrier.iconUrl}`} alt="icon" className="w-10 h-10" />
+            <div
+              className="w-10 h-10 bg-contain bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `url(${
+                  carrier.iconUrl.startsWith("http") ? carrier.iconUrl : `https:${carrier.iconUrl}`
+                })`,
+              }}
+            />
           )}
           <div className="flex space-x-2 items-center">
             <p className="text-xl font-semibold">{departureTime}</p>
@@ -67,7 +74,7 @@ export const TicketCard = ({
         </div>
         <div className="badge badge-lg bg-white border-gray-500 text-gray-500">
           <FiClock className="mr-2" />
-          {minutesToHours(duration)} - {dayChange} change
+          {minutesToHours(duration)} {dayChange ? `- ${dayChange} change` : ""}
         </div>
       </div>
       <div className="flex flex-col space-y-4 items-end">
