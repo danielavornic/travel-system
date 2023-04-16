@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import cn from "classnames";
 
-import { cities } from "@/api";
+import { cities, tickets as ticketsApi } from "@/api";
 import { useAppContext } from "@/hooks";
-import { SelectInput, SwapButton } from "@/components";
-import { TicketType } from "@/types";
+import { TicketMode, TicketType } from "@/types";
+import { removeDiactrics } from "@/utils";
+import { SelectInput, SwapButton, TicketCard } from "@/components";
+
+const airports = require("@nitro-land/airport-codes");
 
 export const TicketForm = () => {
   const {
@@ -16,6 +19,7 @@ export const TicketForm = () => {
     destination,
     startDate,
     endDate,
+    ticketMode,
     setOrigin,
     setDestination,
     setDestinationId,
@@ -26,6 +30,42 @@ export const TicketForm = () => {
 
   const [originInput, setOriginInput] = useState(origin);
   const [destinationInput, setDestinationInput] = useState(destination);
+
+  const { data: tickets } = useQuery({
+    queryKey: ["tickets", origin, destination, startDate, endDate],
+    queryFn: () => {
+      const origin2 =
+        ticketMode === TicketMode.Flight
+          ? airports.findWhere({ city: removeDiactrics(origin) }).get("iata")
+          : origin;
+      const destination2 =
+        ticketMode === TicketMode.Flight
+          ? airports.findWhere({ city: removeDiactrics(destination) }).get("iata")
+          : destination;
+
+      if (ticketMode === TicketMode.Flight) {
+        return ticketsApi.getFlights({
+          origin: origin2,
+          destination: destination2,
+          startDate,
+          endDate,
+          mode: ticketMode,
+        });
+      }
+
+      return ticketsApi.getTickets({
+        origin: origin2,
+        destination: destination2,
+        startDate,
+        endDate,
+        mode: ticketMode,
+      });
+    },
+    enabled: !!origin && !!destination && !!startDate,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+  });
 
   const { data: originOptions } = useQuery({
     queryKey: ["originOptions", originInput],
@@ -147,6 +187,13 @@ export const TicketForm = () => {
           <button className="btn btn-primary mt-4">Search</button>
         </div>
       </div>
+      {tickets && (
+        <div className="w-full mt-4">
+          {tickets.map((ticket: any, idx: number) => (
+            <TicketCard key={idx} {...ticket} />
+          ))}
+        </div>
+      )}
     </form>
   );
 };
