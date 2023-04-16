@@ -11,6 +11,7 @@ import { removeDiactrics } from "@/utils";
 import { SelectInput, SwapButton, TicketCard } from "@/components";
 
 const airports = require("@nitro-land/airport-codes");
+import Link from "next/link";
 
 export const TicketForm = () => {
   const {
@@ -183,8 +184,9 @@ export const TicketForm = () => {
               />
             </div>
           </div>
-          {/* TODO: Add a link to the button just as in RouteForm etc. */}
-          <button className="btn btn-primary mt-4">Search</button>
+          <Link href="/tickets">
+            <button className="btn btn-primary mt-4">Search</button>
+          </Link>
         </div>
       </div>
       {tickets && (
