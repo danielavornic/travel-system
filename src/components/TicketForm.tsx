@@ -1,26 +1,26 @@
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import cn from "classnames";
 
-import { cities, tickets as ticketsApi } from "@/api";
+import { cities } from "@/api";
 import { useAppContext } from "@/hooks";
-import { TicketMode, TicketType } from "@/types";
-import { removeDiactrics } from "@/utils";
-import { SelectInput, SwapButton, TicketCard } from "@/components";
+import { TicketType } from "@/types";
+import { SelectInput, SwapButton } from "@/components";
 
-const airports = require("@nitro-land/airport-codes");
-import Link from "next/link";
+interface TicketFormProps extends React.HTMLAttributes<HTMLFormElement> {
+  onPage?: boolean;
+}
 
-export const TicketForm = () => {
+export const TicketForm = ({ onPage = false, className, ...props }: TicketFormProps) => {
   const {
     ticketType,
     origin,
     destination,
     startDate,
     endDate,
-    ticketMode,
     setOrigin,
     setDestination,
     setDestinationId,
@@ -31,42 +31,6 @@ export const TicketForm = () => {
 
   const [originInput, setOriginInput] = useState(origin);
   const [destinationInput, setDestinationInput] = useState(destination);
-
-  const { data: tickets } = useQuery({
-    queryKey: ["tickets", origin, destination, startDate, endDate],
-    queryFn: () => {
-      const origin2 =
-        ticketMode === TicketMode.Flight
-          ? airports.findWhere({ city: removeDiactrics(origin) }).get("iata")
-          : origin;
-      const destination2 =
-        ticketMode === TicketMode.Flight
-          ? airports.findWhere({ city: removeDiactrics(destination) }).get("iata")
-          : destination;
-
-      if (ticketMode === TicketMode.Flight) {
-        return ticketsApi.getFlights({
-          origin: origin2,
-          destination: destination2,
-          startDate,
-          endDate,
-          mode: ticketMode,
-        });
-      }
-
-      return ticketsApi.getTickets({
-        origin: origin2,
-        destination: destination2,
-        startDate,
-        endDate,
-        mode: ticketMode,
-      });
-    },
-    enabled: !!origin && !!destination && !!startDate,
-    onSuccess: (data) => {
-      console.log(data);
-    },
-  });
 
   const { data: originOptions } = useQuery({
     queryKey: ["originOptions", originInput],
@@ -107,8 +71,12 @@ export const TicketForm = () => {
 
   return (
     <form
-      className="flex flex-col md:flex-row items-end md:justify-between w-full flex-wrap"
+      className={cn(
+        "flex flex-col md:flex-row items-end md:justify-between w-full flex-wrap",
+        className,
+      )}
       onSubmit={handleSubmit}
+      {...props}
     >
       <div className="w-full">
         <div className="w-full flex mb-2">
@@ -133,7 +101,11 @@ export const TicketForm = () => {
         </div>
 
         <div className="flex items-end flex-wrap">
-          <div className="flex items-end mr-6 flex-[1.8] w-full">
+          <div
+            className={cn("flex items-end mr-6 flex-[1.8] w-full", {
+              "flex-[2]": onPage,
+            })}
+          >
             <div className="form-control w-full">
               <label className="label">
                 <span className="label-text">Origin</span>
@@ -159,12 +131,18 @@ export const TicketForm = () => {
             </div>
           </div>
           <div className="flex items-end w-full flex-1 mr-6">
-            <div className="form-control mr-2">
+            <div
+              className={cn("form-control mr-2", {
+                "flex-1": onPage,
+              })}
+            >
               <label className="label">
                 <span className="label-text">Departure date</span>
               </label>
               <DatePicker
-                className="input input-bordered max-w-[200px]"
+                className={cn("input input-bordered max-w-[200px]", {
+                  "w-full max-w-none": onPage,
+                })}
                 wrapperClassName="w-auto"
                 selected={startDate}
                 onChange={(date) => handleSetStartDate(date as Date)}
@@ -177,7 +155,9 @@ export const TicketForm = () => {
                 <span className="label-text">Return date</span>
               </label>
               <DatePicker
-                className="input input-bordered max-w-[200px]"
+                className={cn("input input-bordered max-w-[200px]", {
+                  "w-full max-w-none": onPage,
+                })}
                 selected={endDate}
                 onChange={(date) => handleSetEndDate(date as Date)}
                 minDate={startDate}
@@ -189,13 +169,6 @@ export const TicketForm = () => {
           </Link>
         </div>
       </div>
-      {tickets && (
-        <div className="w-full mt-4">
-          {tickets.map((ticket: any, idx: number) => (
-            <TicketCard key={idx} {...ticket} />
-          ))}
-        </div>
-      )}
     </form>
   );
 };
