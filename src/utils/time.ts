@@ -40,3 +40,10 @@ export const convertTime = (timeString: string): string | undefined => {
   date.setHours(date.getHours() + 11);
   return date.toISOString().slice(0, 16);
 };
+
+export const formatTicketDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const options = { weekday: "short", day: "numeric", month: "short" };
+  const formattedDate = date.toLocaleDateString("en-US", options as any);
+  return formattedDate;
+};

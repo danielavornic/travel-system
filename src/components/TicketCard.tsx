@@ -1,6 +1,8 @@
-import { minutesToHours } from "@/utils";
+import { useAppContext } from "@/hooks";
+import { formatTicketDate, minutesToHours } from "@/utils";
 import cn from "classnames";
-import { FiArrowRight, FiClock } from "react-icons/fi";
+import { FiClock } from "react-icons/fi";
+import { BsArrowRight } from "react-icons/bs";
 
 interface TicketCardProps extends React.HTMLAttributes<HTMLDivElement> {
   arrivalDate: string;
@@ -34,50 +36,58 @@ export const TicketCard = ({
   dayChange,
   ...props
 }: TicketCardProps) => {
+  const { origin, destination } = useAppContext();
+
   return (
     <div
       className={cn(
-        "flex justify-between items-end w-full p-4 border bg-white rounded-lg border-gray-200",
+        "flex justify-between items-center w-full p-4 border bg-white rounded-lg border-gray-200",
         className,
       )}
+      {...props}
     >
-      <div className="space-y-4">
-        <div className="flex space-x-4 items-center">
-          {carrier?.iconUrl && (
-            <div
-              className="w-10 h-10 bg-contain bg-center bg-no-repeat"
-              style={{
-                backgroundImage: `url(${
-                  carrier.iconUrl.startsWith("http") ? carrier.iconUrl : `https:${carrier.iconUrl}`
-                })`,
-              }}
-            />
-          )}
-          <div className="flex space-x-2 items-center">
-            <p className="text-xl font-semibold">{departureTime}</p>
-            <FiArrowRight className="text-gray-500" />
-            <p className="text-xl font-semibold">{arrivalTime}</p>
+      <div className="flex flex-col space-y-3 items-center justify-center w-1/6">
+        {carrier?.iconUrl && (
+          <div
+            className="w-10 h-10 bg-contain bg-center bg-no-repeat"
+            style={{
+              backgroundImage: `url(${
+                carrier.iconUrl.startsWith("http") ? carrier.iconUrl : `https:${carrier.iconUrl}`
+              })`,
+            }}
+          />
+        )}
+        <p className="text-lg font-semibold">{carrier?.name}</p>
+      </div>
+
+      <div
+        className="space-y-6 w-full h-fll border-x-2 border-dashed px-4 py-2"
+        style={{ borderLeftStyle: "solid" }}
+      >
+        <div className="flex justify-between items-center w-full max-w-[80%] mx-auto">
+          <div className="space-y-2 flex-col items-center text-center justify-center">
+            <p className="text-lg">{origin}</p>
+            <p className="text-2xl font-semibold">{departureTime}</p>
+            <p className="text-xl">{formatTicketDate(departureDate)}</p>
+          </div>
+
+          <div className="flex flex-col items-center justify-center space-y-4">
+            <BsArrowRight className="text-4xl text-primary" />
+            <div className="badge badge-lg bg-white border-primary text-primary">
+              <FiClock className="mr-2" />
+              {minutesToHours(duration)} {dayChange ? `- ${dayChange} change` : ""}
+            </div>
+          </div>
+
+          <div className="space-y-2 flex-col items-center text-center justify-center">
+            <p className="text-lg">{destination}</p>
+            <p className="text-2xl font-semibold">{arrivalTime}</p>
+            <p className="text-xl">{formatTicketDate(arrivalDate)}</p>
           </div>
         </div>
-        <div className="space-y-2">
-          <p>
-            <span className="font-bold">From:</span> {departureDate}
-          </p>
-          <p>
-            <span className="font-bold">To:</span> {arrivalDate}
-          </p>
-          {carrier && carrier.name && (
-            <p>
-              <span className="font-bold">Carrier:</span> {carrier?.name}
-            </p>
-          )}
-        </div>
-        <div className="badge badge-lg bg-white border-gray-500 text-gray-500">
-          <FiClock className="mr-2" />
-          {minutesToHours(duration)} {dayChange ? `- ${dayChange} change` : ""}
-        </div>
       </div>
-      <div className="flex flex-col space-y-4 items-end">
+
+      <div className="flex flex-col space-y-4 items-center justify-center w-1/5">
         <p className="font-bold text-2xl text-primary">{price}$</p>
         <a href={link} target="_blank" rel="noreferrer">
           <button className="btn btn-primary btn-sm">Buy ticket</button>
