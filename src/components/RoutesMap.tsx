@@ -24,6 +24,7 @@ export const RoutesMap = () => {
     paths: [],
   };
   const [endpoints, setEndpoints] = useState<any>([]);
+  const [error, setError] = useState<any>(null);
 
   const handleLoad = (e: any) => {
     e.target.addSource("paths", {
@@ -90,22 +91,24 @@ export const RoutesMap = () => {
         decode(path).map(([longitude, latitude]) => [latitude, longitude]),
       );
 
-      setEndpoints([
-        {
-          longitude: decodedRoute[0]?.[0][0],
-          latitude: decodedRoute[0]?.[0][1],
-        },
-        {
-          longitude:
-            decodedRoute[decodedRoute.length - 1][
-              decodedRoute?.[decodedRoute.length - 1]?.length - 1
-            ][0],
-          latitude:
-            decodedRoute[decodedRoute.length - 1][
-              decodedRoute?.[decodedRoute.length - 1]?.length - 1
-            ][1],
-        },
-      ]);
+      setEndpoints(
+        [
+          {
+            longitude: decodedRoute[0]?.[0][0],
+            latitude: decodedRoute[0]?.[0][1],
+          },
+          {
+            longitude:
+              decodedRoute[decodedRoute.length - 1]?.[
+                decodedRoute?.[decodedRoute.length - 1]?.length - 1
+              ][0],
+            latitude:
+              decodedRoute[decodedRoute.length - 1]?.[
+                decodedRoute?.[decodedRoute.length - 1]?.length - 1
+              ][1],
+          },
+        ].filter((endpoint) => endpoint.longitude && endpoint.latitude),
+      );
 
       const bounds = decodedRoute.reduce(
         (bounds: any, path: any) =>
@@ -121,6 +124,13 @@ export const RoutesMap = () => {
           [-Infinity, -Infinity],
         ],
       );
+
+      if (bounds[0][0] === Infinity || bounds[0][0] === -Infinity) {
+        setError("No route found");
+        return;
+      }
+
+      setError(null);
 
       const viewport = new mapboxgl.LngLatBounds(bounds[1], bounds[0]);
 
@@ -140,13 +150,25 @@ export const RoutesMap = () => {
       onMove={(e) => setViewstate(e.viewState)}
       onLoad={handleLoad}
     >
-      {endpoints.map((location: any) => (
-        <Marker key={location.title} latitude={location.latitude} longitude={location.longitude}>
-          <button className="marker-btn">
-            <img src="/images/marker.svg" alt="location Marker" width="30" />
-          </button>
-        </Marker>
-      ))}
+      {endpoints.length > 0 &&
+        endpoints.map((location: any) => (
+          <Marker key={location.title} latitude={location.latitude} longitude={location.longitude}>
+            <button className="marker-btn">
+              <img src="/images/marker.svg" alt="location Marker" width="30" />
+            </button>
+          </Marker>
+        ))}
+
+      {(error || endpoints.length === 0) && (
+        <div>
+          <div className="card bg-white w-full max-w-lg mx-auto block z-40 p-4 shadow-lg absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <p className="text-lg font-semibold text-center">
+              There was an error while trying to find this route.
+            </p>
+          </div>
+          <div className="w-full h-full absolute top-0 bg-gray-50 opacity-70" />
+        </div>
+      )}
     </MapGL>
   );
 };
