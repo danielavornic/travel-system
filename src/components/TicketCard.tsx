@@ -1,9 +1,10 @@
-import { useAppContext } from "@/hooks";
-import { formatTicketDate, minutesToHours } from "@/utils";
 import cn from "classnames";
 import { FiClock } from "react-icons/fi";
 import { BsArrowRight } from "react-icons/bs";
-import { IoPerson, IoPersonOutline } from "react-icons/io5";
+import { IoPerson } from "react-icons/io5";
+
+import { useAppContext } from "@/hooks";
+import { formatTicketDate, minutesToHours } from "@/utils";
 
 interface TicketCardProps extends React.HTMLAttributes<HTMLDivElement> {
   arrivalDate: string;
