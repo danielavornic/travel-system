@@ -3,6 +3,7 @@ import { formatTicketDate, minutesToHours } from "@/utils";
 import cn from "classnames";
 import { FiClock } from "react-icons/fi";
 import { BsArrowRight } from "react-icons/bs";
+import { IoPerson, IoPersonOutline } from "react-icons/io5";
 
 interface TicketCardProps extends React.HTMLAttributes<HTMLDivElement> {
   arrivalDate: string;
@@ -36,7 +37,7 @@ export const TicketCard = ({
   dayChange,
   ...props
 }: TicketCardProps) => {
-  const { origin, destination } = useAppContext();
+  const { origin, destination, ticketAdultsNr } = useAppContext();
 
   return (
     <div
@@ -88,7 +89,13 @@ export const TicketCard = ({
       </div>
 
       <div className="flex flex-col space-y-4 items-center justify-center w-1/5">
-        <p className="font-bold text-2xl text-primary">{price}$</p>
+        <div className="flex flex-col items-center">
+          <p className="font-bold text-2xl">${price}</p>
+          <div className="flex space-x-1 items-center text-gray-500">
+            <p>{ticketAdultsNr}</p>
+            <IoPerson className="ml-2" />
+          </div>
+        </div>
         <a href={link} target="_blank" rel="noreferrer">
           <button className="btn btn-primary btn-sm">Buy ticket</button>
         </a>

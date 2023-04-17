@@ -13,6 +13,7 @@ type AppState = {
   selectedRoute?: Route;
   selectedHotel?: Hotel;
   ticketMode?: TicketMode;
+  ticketAdultsNr: number;
   setOrigin: (origin: string) => void;
   setDestination: (destination: string) => void;
   setStartDate: (date: Date) => void;
@@ -23,6 +24,7 @@ type AppState = {
   selectHotel: (hotel: Hotel | undefined) => void;
   setTicketMode: (ticketMode: TicketMode | undefined) => void;
   swapLocations: () => void;
+  setTicketAdultsNr: (ticketAdultsNr: number) => void;
 };
 
 type AppAction =
@@ -35,7 +37,8 @@ type AppAction =
   | { type: "SET_DESTINATION_ID"; payload: string }
   | { type: "SELECT_ROUTE"; payload: Route | undefined }
   | { type: "SELECT_HOTEL"; payload: Hotel | undefined }
-  | { type: "SET_TICKET_MODE"; payload: TicketMode | undefined };
+  | { type: "SET_TICKET_MODE"; payload: TicketMode | undefined }
+  | { type: "SET_TICKET_ADULTS_NR"; payload: number };
 
 const initialState: AppState = {
   origin: "",
@@ -48,6 +51,7 @@ const initialState: AppState = {
   selectedRoute: undefined,
   selectedHotel: undefined,
   ticketMode: TicketMode.Bus,
+  ticketAdultsNr: 1,
   setOrigin: () => null,
   setDestination: () => null,
   setStartDate: () => null,
@@ -58,6 +62,7 @@ const initialState: AppState = {
   selectHotel: () => null,
   setTicketMode: () => null,
   swapLocations: () => null,
+  setTicketAdultsNr: () => null,
 };
 
 export const AppContext = createContext<AppState>(initialState);
@@ -100,6 +105,12 @@ const sharedReducer = (state: AppState, action: AppAction) => {
       return {
         ...state,
         ticketMode: action.payload,
+      };
+    }
+    case "SET_TICKET_ADULTS_NR": {
+      return {
+        ...state,
+        ticketAdultsNr: action.payload,
       };
     }
     case "SWAP_LOCATIONS": {
@@ -198,6 +209,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
           dispatch({ type: "SELECT_HOTEL", payload: hotel }),
         setTicketMode: (ticketMode: TicketMode | undefined) =>
           dispatch({ type: "SET_TICKET_MODE", payload: ticketMode }),
+        setTicketAdultsNr: (ticketAdultsNr: number) =>
+          dispatch({ type: "SET_TICKET_ADULTS_NR", payload: ticketAdultsNr }),
         swapLocations: () => dispatch({ type: "SWAP_LOCATIONS" }),
       }}
     >

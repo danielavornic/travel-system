@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import cn from "classnames";
+import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 
 import { cities } from "@/api";
 import { useAppContext } from "@/hooks";
@@ -21,12 +22,14 @@ export const TicketForm = ({ onPage = false, className, ...props }: TicketFormPr
     destination,
     startDate,
     endDate,
+    ticketAdultsNr,
     setOrigin,
     setDestination,
     setDestinationId,
     setStartDate,
     setEndDate,
     setTicketType,
+    setTicketAdultsNr,
   } = useAppContext();
 
   const [originInput, setOriginInput] = useState(origin);
@@ -164,6 +167,39 @@ export const TicketForm = ({ onPage = false, className, ...props }: TicketFormPr
               />
             </div>
           </div>
+          {onPage && (
+            <div className="form-control mr-4">
+              <label className="label">
+                <span className="label-text">Nr. adults</span>
+              </label>
+              <div className="flex border border-gray-300 rounded-lg h-12">
+                <input
+                  className="input bg-opacity-60 text-center w-16 h-[46px] focus:outline-none cursor-default"
+                  type="number"
+                  min={1}
+                  max={9}
+                  value={ticketAdultsNr}
+                  readOnly
+                />
+                <div className="flex flex-col bg-gray-100 rounded-r-[0.4rem]">
+                  <button
+                    type="button"
+                    className="flex-1 px-1 hover:bg-gray-200 rounded-tr-[0.4rem] transition"
+                    onClick={() => setTicketAdultsNr(Math.min(ticketAdultsNr + 1, 9))}
+                  >
+                    <AiOutlinePlus className="text-sm" />
+                  </button>
+                  <button
+                    type="button"
+                    className="flex-1 px-1 hover:bg-gray-200 rounded-br-[0.4rem] transition"
+                    onClick={() => setTicketAdultsNr(Math.max(ticketAdultsNr - 1, 1))}
+                  >
+                    <AiOutlineMinus className="text-sm" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
           <Link href="/tickets">
             <button className="btn btn-primary mt-4">Search</button>
           </Link>

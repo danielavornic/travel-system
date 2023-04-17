@@ -3,16 +3,16 @@ import { useQuery } from "@tanstack/react-query";
 import { TicketMode } from "@/types";
 import { tickets as ticketsApi } from "@/api";
 import { useAppContext } from "@/hooks";
-import { removeDiactrics } from "@/utils";
+import { generatePaxAgesStr, generatePaxStr, removeDiactrics } from "@/utils";
 import { Layout, Spinner, TicketCard, TicketForm } from "@/components";
 
 const airports = require("@nitro-land/airport-codes");
 
 const Tickets = () => {
-  const { origin, destination, startDate, endDate, ticketMode } = useAppContext();
+  const { origin, destination, startDate, endDate, ticketMode, ticketAdultsNr } = useAppContext();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["tickets", origin, destination, startDate, endDate, ticketMode],
+    queryKey: ["tickets", origin, destination, startDate, endDate, ticketAdultsNr, ticketMode],
     queryFn: () => {
       const origin2 =
         ticketMode === TicketMode.Flight
@@ -30,6 +30,9 @@ const Tickets = () => {
           startDate,
           endDate,
           mode: ticketMode,
+          paxTypes: generatePaxStr(ticketAdultsNr),
+          paxAges: generatePaxAgesStr(ticketAdultsNr),
+          paxCards: generatePaxAgesStr(ticketAdultsNr),
         });
       }
 
@@ -39,9 +42,12 @@ const Tickets = () => {
         startDate,
         endDate,
         mode: ticketMode,
+        paxTypes: generatePaxStr(ticketAdultsNr),
+        paxAges: generatePaxAgesStr(ticketAdultsNr),
+        paxCards: generatePaxAgesStr(ticketAdultsNr),
       });
     },
-    enabled: !!origin && !!destination && !!startDate,
+    enabled: !!origin && !!destination && !!startDate && !!ticketAdultsNr,
     onSuccess: (data) => {
       console.log(data);
     },
