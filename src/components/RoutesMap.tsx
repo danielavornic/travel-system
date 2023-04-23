@@ -15,7 +15,7 @@ const initViewport = {
   width: "calc(100vw - 512px)",
 };
 
-export const RoutesMap = () => {
+export const RoutesMap = ({ isLoading }: { isLoading: boolean }) => {
   const [viewstate, setViewstate] = useState<any>(initViewport);
   const mapRef = useRef<any>(null);
 
@@ -159,7 +159,7 @@ export const RoutesMap = () => {
           </Marker>
         ))}
 
-      {(error || endpoints.length === 0) && (
+      {(error || endpoints.length === 0) && !isLoading && (
         <div>
           <div className="card bg-white w-full max-w-lg mx-auto block z-40 p-4 shadow-lg absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <p className="text-lg font-semibold text-center">

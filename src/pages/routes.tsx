@@ -58,7 +58,7 @@ const Routes = () => {
             ))}
           </div>
         </div>
-        <RoutesMap />
+        <RoutesMap isLoading={isLoading} />
       </div>
     </Layout>
   );
