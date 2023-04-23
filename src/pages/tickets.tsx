@@ -4,14 +4,14 @@ import { TicketMode } from "@/types";
 import { tickets as ticketsApi } from "@/api";
 import { useAppContext } from "@/hooks";
 import { generatePaxAgesStr, generatePaxStr, removeDiactrics } from "@/utils";
-import { Layout, Spinner, TicketCard, TicketForm } from "@/components";
+import { Layout, Spinner, TicketCard, TicketForm, TransportModesTabs } from "@/components";
 
 const airports = require("@nitro-land/airport-codes");
 
 const Tickets = () => {
   const { origin, destination, startDate, endDate, ticketMode, ticketAdultsNr } = useAppContext();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isRefetching, refetch } = useQuery({
     queryKey: ["tickets", origin, destination, startDate, endDate, ticketAdultsNr, ticketMode],
     queryFn: () => {
       const origin2 =
@@ -59,7 +59,9 @@ const Tickets = () => {
         <h1 className="text-4xl font-bold mb-8">Tickets</h1>
         <TicketForm onPage />
 
-        {isLoading && (
+        <TransportModesTabs className="mt-4" />
+
+        {(isLoading || isRefetching) && !data?.length && (
           <div className="flex justify-center items-center mt-16">
             <Spinner />
           </div>
@@ -67,12 +69,19 @@ const Tickets = () => {
 
         {data && (
           <div className="w-full mt-12 space-y-6">
-            {data.length === 0 ? (
+            {data.length === 0 && !isLoading && !isRefetching ? (
               <div className="mt-16 space-y-2">
                 <p className="text-2xl font-bold">No tickets found</p>
                 <p className="text-lg">
-                  Sorry! We were not able to find any tickets that matched your search.
+                  Sorry! We were not able to find any tickets that matched your search. Please try
+                  again or use a different search.
                 </p>
+                <span
+                  className="text-lg text-primary underline cursor-pointer"
+                  onClick={() => refetch()}
+                >
+                  Retry.
+                </span>
               </div>
             ) : (
               <>
