@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -13,9 +13,12 @@ import { SelectInput, SwapButton } from "@/components";
 
 interface TicketFormProps extends React.HTMLAttributes<HTMLFormElement> {
   onPage?: boolean;
+  refetch?: () => void;
 }
 
-export const TicketForm = ({ onPage = false, className, ...props }: TicketFormProps) => {
+export const TicketForm = ({ onPage = false, refetch, className, ...props }: TicketFormProps) => {
+  const router = useRouter();
+
   const {
     ticketType,
     origin,
@@ -200,9 +203,18 @@ export const TicketForm = ({ onPage = false, className, ...props }: TicketFormPr
               </div>
             </div>
           )}
-          <Link href="/tickets">
-            <button className="btn btn-primary mt-4">Search</button>
-          </Link>
+          <button
+            className="btn btn-primary mt-4"
+            onClick={() => {
+              if (onPage) {
+                refetch?.();
+              } else {
+                router.push("/tickets");
+              }
+            }}
+          >
+            Search
+          </button>
         </div>
       </div>
     </form>

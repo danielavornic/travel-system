@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { TicketMode } from "@/types";
 import { tickets as ticketsApi } from "@/api";
@@ -9,6 +9,7 @@ import { Layout, Spinner, TicketCard, TicketForm, TransportModesTabs } from "@/c
 const airports = require("@nitro-land/airport-codes");
 
 const Tickets = () => {
+  const queryClient = useQueryClient();
   const { origin, destination, startDate, endDate, ticketMode, ticketAdultsNr } = useAppContext();
 
   const { data, isLoading, isRefetching, refetch } = useQuery({
@@ -57,11 +58,17 @@ const Tickets = () => {
     <Layout title="Tickets" hideFooter>
       <div className="container mx-auto justify-between m-10 pb-12">
         <h1 className="text-4xl font-bold mb-8">Tickets</h1>
-        <TicketForm onPage />
+        <TicketForm
+          onPage
+          refetch={() => {
+            queryClient.invalidateQueries(["tickets"]);
+            refetch();
+          }}
+        />
 
         <TransportModesTabs className="mt-4" />
 
-        {(isLoading || isRefetching) && !data?.length && (
+        {(isLoading || isRefetching) && (
           <div className="flex justify-center items-center mt-16">
             <Spinner />
           </div>
@@ -78,18 +85,21 @@ const Tickets = () => {
                 </p>
                 <span
                   className="text-lg text-primary underline cursor-pointer"
-                  onClick={() => refetch()}
+                  onClick={() => {
+                    queryClient.invalidateQueries(["tickets"]);
+                    refetch();
+                  }}
                 >
                   Retry.
                 </span>
               </div>
-            ) : (
+            ) : !isRefetching ? (
               <>
                 {data.map((ticket: any, idx: number) => (
                   <TicketCard key={idx} {...ticket} />
                 ))}
               </>
-            )}
+            ) : null}
           </div>
         )}
       </div>
