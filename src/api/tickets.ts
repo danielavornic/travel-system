@@ -58,7 +58,7 @@ export const tickets = {
       };
     });
 
-    return results;
+    return results.sort((a: any, b: any) => parseFloat(a.price) - parseFloat(b.price));
   },
 
   getFlights: async (params: any) => {
@@ -157,6 +157,6 @@ export const tickets = {
       };
     });
 
-    return results;
+    return results.sort((a: any, b: any) => parseFloat(a.price) - parseFloat(b.price));
   },
 };
