@@ -12,7 +12,7 @@ const Tickets = () => {
   const queryClient = useQueryClient();
   const { origin, destination, startDate, endDate, ticketMode, ticketAdultsNr } = useAppContext();
 
-  const { data, isLoading, isRefetching, refetch } = useQuery({
+  const { data, isFetching, refetch } = useQuery({
     queryKey: ["tickets", origin, destination, startDate, endDate, ticketAdultsNr, ticketMode],
     queryFn: () => {
       const origin2 =
@@ -52,6 +52,7 @@ const Tickets = () => {
     onSuccess: (data) => {
       console.log(data);
     },
+    refetchOnWindowFocus: false,
   });
 
   return (
@@ -68,7 +69,7 @@ const Tickets = () => {
 
         <TransportModesTabs className="mt-4" />
 
-        {(isLoading || isRefetching) && (
+        {isFetching && (
           <div className="flex justify-center items-center mt-16">
             <Spinner />
           </div>
@@ -76,7 +77,7 @@ const Tickets = () => {
 
         {data && (
           <div className="w-full mt-12 space-y-6">
-            {data.length === 0 && !isLoading && !isRefetching ? (
+            {data.length === 0 && !isFetching ? (
               <div className="mt-16 space-y-2">
                 <p className="text-2xl font-bold">No tickets found</p>
                 <p className="text-lg">
@@ -93,7 +94,7 @@ const Tickets = () => {
                   Retry.
                 </span>
               </div>
-            ) : !isRefetching ? (
+            ) : !isFetching ? (
               <>
                 {data.map((ticket: any, idx: number) => (
                   <TicketCard key={idx} {...ticket} />
