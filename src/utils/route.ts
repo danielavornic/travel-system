@@ -68,33 +68,6 @@ export const getCheapestRoute = (routes: Route[]) => {
   return cheapestRoute;
 };
 
-// export const getBestRoute = (data: any) => {
-//   let bestRoute: any = null;
-//   let bestScore = Number.NEGATIVE_INFINITY;
-
-//   data.forEach((route: any) => {
-//     const { duration, indicativePrices } = route;
-//     const priceLow = indicativePrices[0]?.priceLow;
-//     const priceHigh = indicativePrices[0]?.priceHigh;
-//     const interval = priceHigh - priceLow;
-
-//     const score = 1 / duration + 1 / interval;
-
-//     if (score > bestScore) {
-//       bestRoute = route;
-//       bestScore = score;
-//     }
-
-//     if (score === bestScore) {
-//       if (duration < bestRoute.duration) {
-//         bestRoute = route;
-//       }
-//     }
-//   });
-
-//   return bestRoute;
-// };
-
 export const filterFlightRoutes = (data: any) => {
   let routes = data.routes.filter(
     (route: any) =>
@@ -129,10 +102,12 @@ export const addPathsToRoutes = (routes: Route[], data: any) => {
       [segmentData.options[0]].forEach((option: any) => {
         const optionData = data.options[option];
         optionData.hops.forEach((hop: any) => {
-          const hopData = data.paths[hop];
+          const lineIdx = data.hops[hop].line;
+          const pathIdx = data.lines[lineIdx].path;
+          const path = data.paths[pathIdx];
           if (!route.paths) route.paths = [];
-          if (hopData && !route.paths.includes(hopData)) {
-            route.paths.push(hopData);
+          if (path && !route.paths.includes(path)) {
+            route.paths.push(path);
           }
         });
       });
