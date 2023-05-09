@@ -48,9 +48,9 @@ export default function Home() {
   const tab = router.query?.tab || Tabs.Routes;
 
   return (
-    <Layout hideFooter>
+    <Layout>
       <div
-        className="flex flex-col items-center h-full pt-40 bg-opacity-50 bg-cover bg-bottom"
+        className="flex flex-col items-center h-full pt-36 bg-opacity-50 bg-cover bg-bottom"
         style={{ backgroundImage: 'url("/images/home-bg.png")' }}
       >
         <div className="text-center mb-10">

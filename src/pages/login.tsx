@@ -44,7 +44,7 @@ const LoginPage = () => {
   useEffect(() => setRedirectUrl(window.location.origin), []);
 
   return (
-    <Layout title="Login" description="Login to Travel Planner" hideFooter>
+    <Layout title="Login" description="Login to Travel Planner">
       <div
         className="w-full h-full bg-cover "
         style={{ backgroundImage: 'url("/images/home-bg.png")' }}
